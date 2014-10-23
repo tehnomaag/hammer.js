@@ -45,6 +45,16 @@ inherit(SwipeRecognizer, AttrRecognizer, {
 
     emit: function(input) {
         var direction = directionStr(input.direction);
+        var initialTarget = this.manager.session.firstInput.target;
+
+        // We have initial target and it's still in the DOM and is not
+        // our current target, then set it as relatedTarget.
+        if (initialTarget &&
+            this.manager.element.contains(initialTarget) &&
+            initialTarget !== input.target) {
+            input.relatedTarget = initialTarget;
+        }
+
         if (direction) {
             this.manager.emit(this.options.event + direction, input);
         }

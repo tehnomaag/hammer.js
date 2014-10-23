@@ -1,4 +1,4 @@
-/*! Hammer.JS - v2.0.4 - 2014-10-22
+/*! Hammer.JS - v2.0.4 - 2014-10-23
  * http://hammerjs.github.io/
  *
  * Copyright (c) 2014 Jorik Tangelder;
@@ -593,7 +593,8 @@ function simpleCloneInputData(input) {
         pointers: pointers,
         center: getCenter(pointers),
         deltaX: input.deltaX,
-        deltaY: input.deltaY
+        deltaY: input.deltaY,
+        target: input.srcEvent.target
     };
 }
 
@@ -1865,6 +1866,16 @@ inherit(SwipeRecognizer, AttrRecognizer, {
 
     emit: function(input) {
         var direction = directionStr(input.direction);
+        var initialTarget = this.manager.session.firstInput.target;
+
+        // We have initial target and it's still in the DOM and is not
+        // our current target, then set it as relatedTarget.
+        if (initialTarget &&
+            this.manager.element.contains(initialTarget) &&
+            initialTarget !== input.target) {
+            input.relatedTarget = initialTarget;
+        }
+
         if (direction) {
             this.manager.emit(this.options.event + direction, input);
         }

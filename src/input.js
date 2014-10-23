@@ -267,7 +267,8 @@ function simpleCloneInputData(input) {
         pointers: pointers,
         center: getCenter(pointers),
         deltaX: input.deltaX,
-        deltaY: input.deltaY
+        deltaY: input.deltaY,
+        target: input.srcEvent.target
     };
 }
 
