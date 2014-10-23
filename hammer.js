@@ -1867,12 +1867,12 @@ inherit(SwipeRecognizer, AttrRecognizer, {
     emit: function(input) {
         var direction = directionStr(input.direction);
         var initialTarget = this.manager.session.firstInput.target;
+        var el = this.manager.element;
 
-        // We have initial target and it's still in the DOM and is not
-        // our current target, then set it as relatedTarget.
-        if (initialTarget &&
-            this.manager.element.contains(initialTarget) &&
-            initialTarget !== input.target) {
+        // If have an initial target, it's not us and it's still in the DOM,
+        // then set it as relatedTarget.
+        if (initialTarget && initialTarget !== input.target &&
+            el.contains && el.contains(initialTarget)) {
             input.relatedTarget = initialTarget;
         }
 
